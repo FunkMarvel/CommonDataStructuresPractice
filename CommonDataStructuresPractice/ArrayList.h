@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <stdexcept>
+#include <initializer_list>
 #include <string>
 
 /**
@@ -15,6 +16,7 @@ public:
     ArrayList(int NumElements, T ElementToFill, bool Uninitialized = false);
     ArrayList(const ArrayList &OldObj);
     ArrayList(const ArrayList &&OldObj) noexcept;
+    ArrayList(std::initializer_list<T> ArgList);
 
     ~ArrayList();
 
@@ -103,7 +105,7 @@ ArrayList<T>::ArrayList(const ArrayList&& OldObj) noexcept
 template <typename T>
 ArrayList<T>::~ArrayList()
 {
-    delete Data;
+    delete[] Data;
 }
 
 template <typename T>
@@ -121,7 +123,7 @@ ArrayList<T>& ArrayList<T>::operator=(ArrayList OtherList)
 {
     Capacity = OtherList.Capacity;
     Size = OtherList.Size;
-    delete Data;
+    delete[] Data;
     Data = new T[Capacity];
     for (int i = 0; i < Size; ++i)
     {
@@ -136,7 +138,7 @@ ArrayList<T>& ArrayList<T>::operator=(ArrayList&& OtherList) noexcept
     if (this == OtherList) return *this;
     Capacity = OtherList.Capacity;
     Size = OtherList.Size;
-    delete Data;
+    delete[] Data;
     Data = OtherList.Data;
     return *this;
 }
@@ -174,7 +176,7 @@ void ArrayList<T>::Insert(int Index, T ElementToInsert)
         TempData[i + 1] = Data[i];
     }
     Size++;
-    delete Data;
+    delete[] Data;
     Data = TempData;
     ShrinkToFit();
 }
@@ -201,7 +203,7 @@ void ArrayList<T>::Remove(int Index)
     {
         TempData[i] = Data[i + 1];
     }
-    delete Data;
+    delete[] Data;
     Data = TempData;
     Size--;
     ShrinkToFit();
@@ -215,7 +217,7 @@ void ArrayList<T>::ReallocateData()
     {
         TempData[i] = Data[i];
     }
-    delete Data;
+    delete[] Data;
     Data = TempData;
 }
 
@@ -240,4 +242,9 @@ void ArrayList<T>::Reserve(int NewCapacity)
     if (Capacity >= NewCapacity) return;
     Capacity = NewCapacity;
     ReallocateData();
+}
+
+template<typename T>
+ArrayList<T>::ArrayList(std::initializer_list<T> ArgList) : ArrayList(ArgList.size()) {
+    std::copy(ArgList.begin(), ArgList.end(), Data);
 }
