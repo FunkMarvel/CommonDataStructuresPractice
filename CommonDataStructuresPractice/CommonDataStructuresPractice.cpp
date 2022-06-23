@@ -1,10 +1,10 @@
 #include "ArrayList.h"
+#include "LinkedList.h"
 #include <iostream>
 
-int main(int argc, char* argv[])
-{
-    ArrayList<int> IntArray{4, 1};
-    
+void ArrayTest() {
+    ArrayList<int> IntArray(4, 1);
+
     for (int i = 0; i < IntArray.GetSize(); ++i)
     {
         std::cout << IntArray[i] << " ";
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
     IntArray.Insert(0, 11);
 
     ArrayList<int> IntArrayCopy(IntArray);
-    
+
     for (int i = 0; i < IntArray.GetSize(); ++i)
     {
         std::cout << IntArray[i] << " ";
@@ -56,6 +56,83 @@ int main(int argc, char* argv[])
     }
     std::cout << std::endl << "Size = " << IntArrayCopy.GetSize() << std::endl;
     std::cout << "Capacity = " << IntArrayCopy.GetCapacity() << std::endl;
+}
+
+void LinkedListTest() {
+    LinkedList<int> IntList{2, 1};
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Append(3);
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Insert(-5, 0);
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Remove();
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Remove();
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Remove();
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Remove();
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    IntList.Insert(0,11);
+
+    for (int i = 0; i < IntList.GetSize(); ++i) {
+        auto Temp = IntList[i];
+        std::cout << Temp << " ";
+    }
+    std::cout << std::endl << "Size: " << IntList.GetSize() << std::endl;
+
+    LinkedList<int> PintList{1,2,3,4,5,6,7};
+    for (int i = -10; i < 10; ++i) {
+        std::cout <<  PintList[i] << " ";
+    }
+    std::cout << std::endl << "Size: " << PintList.GetSize() << std::endl;
+}
+
+int main(int argc, char* argv[])
+{
+    ArrayTest();
+    LinkedListTest();
     
     return 0;
 }
