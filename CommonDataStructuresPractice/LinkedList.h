@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 #include <cmath>
+#include <initializer_list>
 
 #include "Node.h"
 
@@ -10,14 +11,18 @@ class LinkedList
 {
 public:
     LinkedList();
-    LinkedList(T HeadValue);
+    LinkedList(std::initializer_list<T> ArgList);
 
     ~LinkedList();
+
+    T& operator[](int Index);
 
     void Append(T NewElement);
     void Insert(int Index, T NewElement);
     void Remove();
     void Remove(int Index);
+
+    int GetSize() { return Size; }
 
 protected:
     Node<T>* Head{nullptr};
@@ -36,13 +41,6 @@ LinkedList<T>::LinkedList()
 }
 
 template <typename T>
-LinkedList<T>::LinkedList(T HeadValue)
-{
-    Head = Tail = CurrentNode = new Node<T>(HeadValue);
-    Size = 1;
-}
-
-template <typename T>
 LinkedList<T>::~LinkedList()
 {
     CurrentNode = Head;
@@ -52,14 +50,23 @@ LinkedList<T>::~LinkedList()
         delete CurrentNode;
         CurrentNode = TempNode;
     }
-    Head = Tail = CurrentNode = nullptr;
-    Size = 0;
 }
 
 template <typename T>
 void LinkedList<T>::Append(T NewElement)
 {
+    if (Size < 1) {
+        Head = Tail = new Node<T>(NewElement);
+        Head->NextNode = Head->PrevNode = Tail;
+        Tail->NextNode = Tail->PrevNode = Head;
+        Size++;
+        return;
+    }
     Tail->NextNode = new Node<T>(NewElement);
+    Tail->NextNode->PrevNode = Tail;
+
+    Tail = Tail->NextNode;
+    Tail->NextNode = Head;
     Head->PrevNode = Tail;
     Size++;
 }
@@ -67,20 +74,21 @@ void LinkedList<T>::Append(T NewElement)
 template <typename T>
 void LinkedList<T>::Insert(int Index, T NewElement)
 {
+    if (Size < 1) { Append(NewElement); return; }
     if (Index == Size || Index == -Size) Index = 0;
     CurrentNode = Head;
     Index = RolloverIndex(Index);
-    for (int i = 1; i < Index - 1; ++i)
+    for (int i = 0; i < Index; ++i)
     {
             CurrentNode = CurrentNode->NextNode;
     }
 
-    auto NewNode = new Node<T>(NewElement);
-    auto TempNode = CurrentNode->NextNode;
-    CurrentNode->NextNode = NewNode;
-
-    NewNode->PrevNode = CurrentNode;
-    NewNode->NextNode = TempNode;
+    auto TempNode = CurrentNode;
+    CurrentNode = new Node<T>(NewElement);
+    CurrentNode->NextNode = TempNode;
+    CurrentNode->PrevNode = TempNode->PrevNode;
+    CurrentNode->PrevNode->NextNode = CurrentNode;
+    TempNode->PrevNode = CurrentNode;
 
     CurrentNode = nullptr;
     Size++;
@@ -110,7 +118,7 @@ void LinkedList<T>::Remove(int Index)
     if (Index == Size || Index == -Size) Index = 0;
     Index = RolloverIndex(Index);
     CurrentNode = Head;
-    for (int i = 0; i < Index - 1; ++i)
+    for (int i = 0; i < Index; ++i)
     {
         CurrentNode = CurrentNode->NextNode;
     }
@@ -126,4 +134,29 @@ int LinkedList<T>::RolloverIndex(int Index)
     if (Index > 0) return (Index % Size); 
 
     return Size - (std::abs(Index) % Size);
+}
+
+template<typename T>
+T &LinkedList<T>::operator[](int Index) {
+    if (Index == 0) return Head->Value;
+    Index = RolloverIndex(Index);
+    CurrentNode = Head;
+    for (int i = 0; i < Index; ++i) {
+        CurrentNode = CurrentNode->NextNode;
+    }
+    return CurrentNode->Value;
+}
+
+template<typename T>
+LinkedList<T>::LinkedList(std::initializer_list<T> ArgList) {
+    Size = ArgList.size();
+    Head = Tail = CurrentNode = new Node<T>(*(ArgList.begin()));
+    for (int i = 1; i < Size; ++i) {
+        CurrentNode->NextNode = new Node<T>(*(ArgList.begin() + i));
+        CurrentNode->NextNode->PrevNode = CurrentNode;
+        CurrentNode = CurrentNode->NextNode;
+    }
+    Tail = CurrentNode;
+    Tail->NextNode = Head;
+    Head->PrevNode = Tail;
 }
