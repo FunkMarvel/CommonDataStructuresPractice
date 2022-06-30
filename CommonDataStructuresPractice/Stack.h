@@ -3,12 +3,12 @@
 #include <algorithm>
 
 template<typename T>
-class StickyStack{
+class Stack{
 public:
-    StickyStack();
-    explicit StickyStack(int StackCapacity);
-    StickyStack(int StackCapacity, T FirstElement);
-    ~StickyStack();
+    Stack();
+    explicit Stack(int StackCapacity);
+    Stack(int StackCapacity, T FirstElement);
+    ~Stack();
 
     void CreateStack(int StackCapacity);
     void Push(T NewValue);
@@ -30,48 +30,45 @@ protected:
 };
 
 template<typename T>
-StickyStack<T>::StickyStack() {
+Stack<T>::Stack() {
     CreateStack(4);
 }
 
 template<typename T>
-StickyStack<T>::~StickyStack() {
+Stack<T>::~Stack() {
     delete[] Data;
 }
 
 template<typename T>
-void StickyStack<T>::Push(T NewValue) {
+void Stack<T>::Push(T NewValue) {
     if (IsFull()) throw std::runtime_error("Stack overflow!");
-    Size++;
-    Data[Size-1] = NewValue;
+    Data[Size++] = NewValue;
 }
 
 template<typename T>
-T StickyStack<T>::Pop() {
+T Stack<T>::Pop() {
     if(IsEmpty()) throw std::runtime_error("Stack underflow!");
-    T PoppedElement{Data[Size-1]};
-    Size--;
-    return PoppedElement;
+    return Data[--Size];
 }
 
 template<typename T>
-T StickyStack<T>::Peek() {
+T Stack<T>::Peek() {
     if (IsEmpty()) throw std::runtime_error("Stack underflow!");
     return Data[Size - 1];
 }
 
 template<typename T>
-bool StickyStack<T>::IsEmpty() {
-    return Size == 0;
+bool Stack<T>::IsEmpty() {
+    return Size <= 0;
 }
 
 template<typename T>
-bool StickyStack<T>::IsFull() {
+bool Stack<T>::IsFull() {
     return Size >= Capacity;
 }
 
 template<typename T>
-void StickyStack<T>::CreateStack(int StackCapacity) {
+void Stack<T>::CreateStack(int StackCapacity) {
     if (StackCapacity < 1) throw std::runtime_error("Stack Capacity must be positive, non-zero integer");
     delete[] Data;
     Data = new T[StackCapacity];
@@ -80,8 +77,7 @@ void StickyStack<T>::CreateStack(int StackCapacity) {
 }
 
 template<typename T>
-bool StickyStack<T>::Contains(T ElementToCheck) {
-
+bool Stack<T>::Contains(T ElementToCheck) {
     for (int i = 0; i < Size; ++i) {
         if (Data[i] == ElementToCheck) return true;
     }
@@ -90,21 +86,21 @@ bool StickyStack<T>::Contains(T ElementToCheck) {
 }
 
 template<typename T>
-StickyStack<T>::StickyStack(int StackCapacity, T FirstElement) : StickyStack(StackCapacity) {
+Stack<T>::Stack(int StackCapacity, T FirstElement) : Stack(StackCapacity) {
     Push(FirstElement);
 }
 
 template<typename T>
-StickyStack<T>::StickyStack(int StackCapacity) {
+Stack<T>::Stack(int StackCapacity) {
     CreateStack(StackCapacity);
 }
 
 template<typename T>
-int StickyStack<T>::GetSize() {
+int Stack<T>::GetSize() {
     return Size;
 }
 
 template<typename T>
-int StickyStack<T>::GetCapacity() {
+int Stack<T>::GetCapacity() {
     return Capacity;
 }
