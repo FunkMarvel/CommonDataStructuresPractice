@@ -1,5 +1,6 @@
 #include "ArrayList.h"
 #include "LinkedList.h"
+#include "StickyStack.h"
 #include <iostream>
 
 void ArrayTest() {
