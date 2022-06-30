@@ -1,6 +1,7 @@
 #include "ArrayList.h"
 #include "LinkedList.h"
 #include "Stack.h"
+#include "Queue.h"
 #include <iostream>
 
 void ArrayTest() {
@@ -156,11 +157,45 @@ void StackTest() {
     stack.CreateStack(10);
 }
 
+void QueueTest() {
+
+    Queue<char> queue(5, '/');
+
+    std::cout << queue.Pop() << std::endl;
+    queue.Push('*');
+    std::cout << queue.Pop() << std::endl;
+
+    queue.Push('/');
+    queue.Push('*');
+    queue.Push('-');
+    queue.Push('+');
+
+    std::cout << std::boolalpha << "Queue contains '+': " << queue.Contains('+') << std::endl;
+    std::cout << "Queue contains '/': " << queue.Contains('/') << std::endl;
+    std::cout << "Queue contains '-': " << queue.Contains('-') << std::endl;
+    std::cout << "Queue contains '0': " << queue.Contains('0') << std::endl;
+
+    for (int _{}; queue.GetSize() > 0; ++_) {
+        std::cout << queue.Pop() << " ";
+    }
+    std::cout << std::endl;
+
+    queue.CreateQueue(10);
+}
+
 int main(int argc, char* argv[])
 {
+    std::cout << "ArrayList: " << std::endl;
     ArrayTest();
+
+    std::cout << "LinkedList: " << std::endl;
     LinkedListTest();
+
+    std::cout << "Stack: " << std::endl;
     StackTest();
+
+    std::cout << "Queue: " << std::endl;
+    QueueTest();
     
     return 0;
 }
