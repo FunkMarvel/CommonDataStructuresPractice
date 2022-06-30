@@ -1,8 +1,7 @@
 #include "ArrayList.h"
 #include "LinkedList.h"
-#include "StickyStack.h"
+#include "Stack.h"
 #include <iostream>
-#include <string>
 
 void ArrayTest() {
     ArrayList<int> IntArray(4, 1);
@@ -133,7 +132,7 @@ void LinkedListTest() {
 
 void StackTest() {
 
-    StickyStack<char> stack(5, '/');
+    Stack<char> stack(5, '/');
 
     std::cout << stack.Pop() << std::endl;
     stack.Push('*');
