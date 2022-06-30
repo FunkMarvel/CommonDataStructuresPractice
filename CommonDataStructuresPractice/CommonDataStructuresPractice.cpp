@@ -2,6 +2,7 @@
 #include "LinkedList.h"
 #include "StickyStack.h"
 #include <iostream>
+#include <string>
 
 void ArrayTest() {
     ArrayList<int> IntArray(4, 1);
@@ -130,10 +131,37 @@ void LinkedListTest() {
     std::cout << std::endl << "Size: " << PintList.GetSize() << std::endl;
 }
 
+void StackTest() {
+
+    StickyStack<char> stack(5, '/');
+
+    std::cout << stack.Pop() << std::endl;
+    stack.Push('*');
+    std::cout << stack.Pop() << std::endl;
+
+    stack.Push('/');
+    stack.Push('*');
+    stack.Push('-');
+    stack.Push('+');
+
+    std::cout << std::boolalpha << "Stack contains '+': " << stack.Contains('+') << std::endl;
+    std::cout << "Stack contains '/': " << stack.Contains('/') << std::endl;
+    std::cout << "Stack contains '-': " << stack.Contains('-') << std::endl;
+    std::cout << "Stack contains '0': " << stack.Contains('0') << std::endl;
+
+    for (int _{}; stack.GetSize() > 0; ++_) {
+        std::cout << stack.Pop() << " ";
+    }
+    std::cout << std::endl;
+
+    stack.CreateStack(10);
+}
+
 int main(int argc, char* argv[])
 {
     ArrayTest();
     LinkedListTest();
+    StackTest();
     
     return 0;
 }
