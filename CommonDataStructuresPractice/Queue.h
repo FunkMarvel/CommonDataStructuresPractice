@@ -59,7 +59,12 @@ void Queue<T>::Push(T NewElement) {
 template<typename T>
 T Queue<T>::Pop() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
-    return Data[--Size];
+    auto PoppedElement = Data[0];
+    for (int i = 1; i < Size; ++i) {
+        Data[i-1] = Data[i];
+    }
+    Size--;
+    return PoppedElement;
 }
 
 template<typename T>
