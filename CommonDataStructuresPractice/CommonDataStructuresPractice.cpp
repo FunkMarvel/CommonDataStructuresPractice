@@ -196,6 +196,9 @@ int main(int argc, char* argv[])
 
     std::cout << "Queue: " << std::endl;
     QueueTest();
+
+    std::cout << "Dictionary: " << std::endl;
+
     
     return 0;
 }
