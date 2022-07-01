@@ -1,6 +1,6 @@
 #pragma once
 
-template<typename V, typename K>
+template <typename V, typename K>
 class Dictionary {
 public:
     Dictionary();

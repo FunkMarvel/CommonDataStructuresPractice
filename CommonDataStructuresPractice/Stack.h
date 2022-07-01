@@ -2,8 +2,8 @@
 
 #include <algorithm>
 
-template<typename T>
-class Stack{
+template <typename T>
+class Stack {
 public:
     Stack();
     explicit Stack(int StackCapacity);
@@ -14,93 +14,92 @@ public:
     void Push(T NewValue);
     T Pop();
     T Peek();
-    int GetSize();
-    int GetCapacity();
+    [[nodiscard]] int GetSize() const;
+    [[nodiscard]] int GetCapacity() const;
 
-    [[nodiscard]] bool IsEmpty();
-    [[nodiscard]] bool IsFull();
+    [[nodiscard]] bool IsEmpty() const;
+    [[nodiscard]] bool IsFull() const;
     [[nodiscard]] bool Contains(T ElementToCheck);
 
 protected:
-    T* Data{nullptr};
+    T* Data_{nullptr};
 
-    int Size{};
-    int Capacity{};
+    int Size_{};
+    int Capacity_{};
 
 };
 
-template<typename T>
+template <typename T>
 Stack<T>::Stack() {
     CreateStack(4);
 }
 
-template<typename T>
+template <typename T>
 Stack<T>::~Stack() {
-    delete[] Data;
+    delete[] Data_;
 }
 
-template<typename T>
+template <typename T>
 void Stack<T>::Push(T NewValue) {
     if (IsFull()) throw std::runtime_error("Stack overflow!");
-    Data[Size++] = NewValue;
+    Data_[Size_++] = NewValue;
 }
 
-template<typename T>
+template <typename T>
 T Stack<T>::Pop() {
-    if(IsEmpty()) throw std::runtime_error("Stack underflow!");
-    return Data[--Size];
+    if (IsEmpty()) throw std::runtime_error("Stack underflow!");
+    return Data_[--Size_];
 }
 
-template<typename T>
+template <typename T>
 T Stack<T>::Peek() {
     if (IsEmpty()) throw std::runtime_error("Stack underflow!");
-    return Data[Size - 1];
+    return Data_[Size_ - 1];
 }
 
-template<typename T>
-bool Stack<T>::IsEmpty() {
-    return Size <= 0;
+template <typename T>
+bool Stack<T>::IsEmpty() const {
+    return Size_ <= 0;
 }
 
-template<typename T>
-bool Stack<T>::IsFull() {
-    return Size >= Capacity;
+template <typename T>
+bool Stack<T>::IsFull() const {
+    return Size_ >= Capacity_;
 }
 
-template<typename T>
+template <typename T>
 void Stack<T>::CreateStack(int StackCapacity) {
     if (StackCapacity < 1) throw std::runtime_error("Stack Capacity must be positive, non-zero integer");
-    delete[] Data;
-    Data = new T[StackCapacity];
-    Capacity = StackCapacity;
-    Size = 0;
+    delete[] Data_;
+    Data_ = new T[StackCapacity];
+    Capacity_ = StackCapacity;
+    Size_ = 0;
 }
 
-template<typename T>
+template <typename T>
 bool Stack<T>::Contains(T ElementToCheck) {
-    for (int i = 0; i < Size; ++i) {
-        if (Data[i] == ElementToCheck) return true;
-    }
+    for (int I{}; I < Size_; ++I)
+        if (Data_[I] == ElementToCheck) return true;
 
     return false;
 }
 
-template<typename T>
+template <typename T>
 Stack<T>::Stack(int StackCapacity, T FirstElement) : Stack(StackCapacity) {
     Push(FirstElement);
 }
 
-template<typename T>
-Stack<T>::Stack(int StackCapacity) {
+template <typename T>
+Stack<T>::Stack(const int StackCapacity) {
     CreateStack(StackCapacity);
 }
 
-template<typename T>
-int Stack<T>::GetSize() {
-    return Size;
+template <typename T>
+int Stack<T>::GetSize() const {
+    return Size_;
 }
 
-template<typename T>
-int Stack<T>::GetCapacity() {
-    return Capacity;
+template <typename T>
+int Stack<T>::GetCapacity() const {
+    return Capacity_;
 }

@@ -3,7 +3,11 @@
 #include <initializer_list>
 #include <stdexcept>
 
-template<typename T>
+/**
+ * \brief Queue.
+ * \tparam T chosen datatype.
+ */
+template <typename T>
 class Queue {
 public:
     Queue();
@@ -29,86 +33,84 @@ protected:
     int Size{};
 };
 
-template<typename T>
+template <typename T>
 Queue<T>::Queue() {
     Data = new T[4];
 }
 
-template<typename T>
+template <typename T>
 Queue<T>::Queue(int QueueCapacity) {
     CreateQueue(QueueCapacity);
 }
 
-template<typename T>
+template <typename T>
 Queue<T>::Queue(int QueueCapacity, T FirstElement) {
     CreateQueue(QueueCapacity);
     Push(FirstElement);
 }
 
-template<typename T>
+template <typename T>
 Queue<T>::~Queue() {
     delete[] Data;
 }
 
-template<typename T>
+template <typename T>
 void Queue<T>::Push(T NewElement) {
     if (IsFull()) throw std::runtime_error("Queue overflow!");
     Data[Size++] = NewElement;
 }
 
-template<typename T>
+template <typename T>
 T Queue<T>::Pop() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
     auto PoppedElement = Data[0];
-    for (int i = 1; i < Size; ++i) {
-        Data[i-1] = Data[i];
-    }
+    for (auto i = 1; i < Size; ++i)
+        Data[i - 1] = Data[i];
     Size--;
     return PoppedElement;
 }
 
-template<typename T>
+template <typename T>
 T Queue<T>::PeekHead() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
-    return Data[Size-1];
+    return Data[Size - 1];
 }
 
-template<typename T>
+template <typename T>
 T Queue<T>::PeekTail() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
     return Data[0];
 }
 
-template<typename T>
+template <typename T>
 bool Queue<T>::IsEmpty() {
     return Size <= 0;
 }
 
-template<typename T>
+template <typename T>
 bool Queue<T>::IsFull() {
     return Size >= Capacity;
 }
 
-template<typename T>
+template <typename T>
 bool Queue<T>::Contains(T ElementToCheck) {
-    for (int i = 0; i < Size; ++i) {
+    for (auto i = 0; i < Size; ++i)
         if (Data[i] == ElementToCheck) return true;
-    }
 
     return false;
 }
 
-template<typename T>
+template <typename T>
 int Queue<T>::GetSize() {
     return Size;
 }
 
-template<typename T>
+template <typename T>
 int Queue<T>::GetCapacity() {
     return Capacity;
 }
 
-template<typename T>
+template <typename T>
 void Queue<T>::CreateQueue(int QueueCapacity) {
     Capacity = QueueCapacity;
     delete[] Data;
