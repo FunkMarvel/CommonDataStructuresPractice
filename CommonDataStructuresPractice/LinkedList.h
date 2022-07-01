@@ -106,8 +106,6 @@ void LinkedList<T>::Remove()
     }
 
     delete Head;
-    delete Tail;
-    delete CurrentNode;
     Head = Tail = CurrentNode = nullptr;
     Size = 0;
 }
