@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <stdexcept>
-#include <string>
 #include <cmath>
 #include <initializer_list>
 
@@ -107,7 +105,9 @@ void LinkedList<T>::Remove()
         return;
     }
 
-    delete Head, Tail, CurrentNode;
+    delete Head;
+    delete Tail;
+    delete CurrentNode;
     Head = Tail = CurrentNode = nullptr;
     Size = 0;
 }
@@ -149,7 +149,7 @@ T &LinkedList<T>::operator[](int Index) {
 
 template<typename T>
 LinkedList<T>::LinkedList(std::initializer_list<T> ArgList) {
-    Size = ArgList.size();
+    Size = static_cast<int>(ArgList.size());
     Head = Tail = CurrentNode = new Node<T>(*(ArgList.begin()));
     for (int i = 1; i < Size; ++i) {
         CurrentNode->NextNode = new Node<T>(*(ArgList.begin() + i));
