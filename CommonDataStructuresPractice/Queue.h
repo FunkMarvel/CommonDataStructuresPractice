@@ -1,6 +1,5 @@
 #pragma once
 
-#include <initializer_list>
 #include <stdexcept>
 
 /**
@@ -19,100 +18,100 @@ public:
     T Pop();
     T PeekHead();
     T PeekTail();
-    [[nodiscard]] bool IsEmpty();
-    [[nodiscard]] bool IsFull();
+    [[nodiscard]] bool IsEmpty() const;
+    [[nodiscard]] bool IsFull() const;
     [[nodiscard]] bool Contains(T ElementToCheck);
 
-    int GetSize();
-    int GetCapacity();
+    [[nodiscard]] int GetSize() const;
+    [[nodiscard]] int GetCapacity() const;
     void CreateQueue(int QueueCapacity);
 
 protected:
-    T* Data{nullptr};
-    int Capacity{};
-    int Size{};
+    T* Data_{nullptr};
+    int Capacity_{};
+    int Size_{};
 };
 
 template <typename T>
 Queue<T>::Queue() {
-    Data = new T[4];
+    Data_ = new T[4];
 }
 
 template <typename T>
-Queue<T>::Queue(int QueueCapacity) {
+Queue<T>::Queue(const int QueueCapacity) {
     CreateQueue(QueueCapacity);
 }
 
 template <typename T>
-Queue<T>::Queue(int QueueCapacity, T FirstElement) {
+Queue<T>::Queue(const int QueueCapacity, T FirstElement) {
     CreateQueue(QueueCapacity);
     Push(FirstElement);
 }
 
 template <typename T>
 Queue<T>::~Queue() {
-    delete[] Data;
+    delete[] Data_;
 }
 
 template <typename T>
 void Queue<T>::Push(T NewElement) {
     if (IsFull()) throw std::runtime_error("Queue overflow!");
-    Data[Size++] = NewElement;
+    Data_[Size_++] = NewElement;
 }
 
 template <typename T>
 T Queue<T>::Pop() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
-    auto PoppedElement = Data[0];
-    for (auto i = 1; i < Size; ++i)
-        Data[i - 1] = Data[i];
-    Size--;
+    auto PoppedElement = Data_[0];
+    for (auto I{1}; I < Size_; ++I)
+        Data_[I - 1] = Data_[I];
+    Size_--;
     return PoppedElement;
 }
 
 template <typename T>
 T Queue<T>::PeekHead() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
-    return Data[Size - 1];
+    return Data_[Size_ - 1];
 }
 
 template <typename T>
 T Queue<T>::PeekTail() {
     if (IsEmpty()) throw std::runtime_error("Queue underflow!");
-    return Data[0];
+    return Data_[0];
 }
 
 template <typename T>
-bool Queue<T>::IsEmpty() {
-    return Size <= 0;
+bool Queue<T>::IsEmpty() const {
+    return Size_ <= 0;
 }
 
 template <typename T>
-bool Queue<T>::IsFull() {
-    return Size >= Capacity;
+bool Queue<T>::IsFull() const {
+    return Size_ >= Capacity_;
 }
 
 template <typename T>
 bool Queue<T>::Contains(T ElementToCheck) {
-    for (auto i = 0; i < Size; ++i)
-        if (Data[i] == ElementToCheck) return true;
+    for (int I{}; I < Size_; ++I)
+        if (Data_[I] == ElementToCheck) return true;
 
     return false;
 }
 
 template <typename T>
-int Queue<T>::GetSize() {
-    return Size;
+int Queue<T>::GetSize() const {
+    return Size_;
 }
 
 template <typename T>
-int Queue<T>::GetCapacity() {
-    return Capacity;
+int Queue<T>::GetCapacity() const {
+    return Capacity_;
 }
 
 template <typename T>
-void Queue<T>::CreateQueue(int QueueCapacity) {
-    Capacity = QueueCapacity;
-    delete[] Data;
-    Data = new T[Capacity];
+void Queue<T>::CreateQueue(const int QueueCapacity) {
+    Capacity_ = QueueCapacity;
+    delete[] Data_;
+    Data_ = new T[Capacity_];
 }
