@@ -14,8 +14,6 @@ public:
     ArrayList();
     explicit ArrayList(int NumElements, bool Uninitialized = false);
     ArrayList(int NumElements, T ElementToFill, bool Uninitialized = false);
-    ArrayList(const ArrayList &OldObj);
-    ArrayList(const ArrayList &&OldObj) noexcept;
     ArrayList(std::initializer_list<T> ArgList);
 
     ~ArrayList();
@@ -75,31 +73,6 @@ ArrayList<T>::ArrayList(int NumElements, T ElementToFill, bool Uninitialized) : 
     {
         Data[i] = ElementToFill;
     }
-}
-
-template <typename T>
-ArrayList<T>::ArrayList(const ArrayList& OldObj)
-{
-    Capacity = OldObj.Capacity;
-    Size = OldObj.Size;
-    Data = new T[Capacity];
-    
-    for (int i = 0; i < Size; ++i)
-    {
-        Data[i] = OldObj.Data[i];
-    }
-}
-
-template <typename T>
-ArrayList<T>::ArrayList(const ArrayList&& OldObj) noexcept
-{
-    Capacity = OldObj.Capacity;
-    Size = OldObj.Size;
-    Data = OldObj.Data;
-
-    OldObj.Capacity = 1;
-    OldObj.Size = 0;
-    OldObj.Data = nullptr;
 }
 
 template <typename T>
